@@ -36,6 +36,12 @@ def cfg():
                     'augmentation' : True, # Random attenuation of source signals to improve generalisation performance (data augmentation)
                     'raw_audio_loss' : True, # Only active for unet_spectrogram network. True: L2 loss on audio. False: L1 loss on spectrogram magnitudes for training and validation and test loss
                     'worse_epochs' : 20, # Patience for early stoppping on validation set
+                    
+                    'musdb_sampling': True, # In case only a sample of the MUSDB18 dataset is being used
+                    'musdb_sr': 0.1, # Percentage of the MUSDB18 dataset to keep
+                    'mhe': False, # Indicates if MHE regularization will be added or not to the loss function
+                    'mhe_model': 'mhe', # Select between standard MHE ("mhe") and half-space MHE ("half_mhe")
+                    'mhe_power': '0' # Select the "power s" parameter. For Euclidean distance: ["0","1","2"], Angular distance: ["a0","a1","a2"]        
                     }
     experiment_id = np.random.randint(0,1000000)
 
@@ -158,4 +164,32 @@ def unet_spectrogram_l1():
         "duration" : 13,
         "num_initial_filters" : 16,
         "raw_audio_loss" : False
+    }
+
+@config_ingredient.named_config
+def sample_multi_instrument_no_mhe():
+    print("Training multi-instrument separation with best model")
+    model_config = {
+        "output_type": "difference",
+        "context": True,
+        "upsampling": "linear",
+        "mono_downmix": False,
+        "task" : "multi_instrument",
+        "musdb_sampling": True,
+        "mhe": False
+    }
+
+@config_ingredient.named_config
+def sample_multi_instrument_mhe_std_0():
+    print("Training multi-instrument separation with best model")
+    model_config = {
+        "output_type": "difference",
+        "context": True,
+        "upsampling": "linear",
+        "mono_downmix": False,
+        "task" : "multi_instrument",
+        "mhe": True,
+        "musdb_sampling": True,
+        "mhe_model": "mhe",
+        "mhe_power": "0"
     }
