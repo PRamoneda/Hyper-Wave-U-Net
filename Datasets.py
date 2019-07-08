@@ -117,14 +117,14 @@ def parse_record(example_proto, source_names, shape):
 def get_dataset(model_config, input_shape, output_shape, partition):
     '''
     For a model configuration and input/output shapes of the network, get the corresponding dataset for a given partition
+    *Optional: select only a sample of the MUSDB18 dataset
     :param model_config: Model config
     :param input_shape: Input shape of network
     :param output_shape: Output shape of network
     :param partition: "train", "valid", or "test" partition
     :return: Tensorflow dataset object
     '''
-
-
+    
     # Check if pre-processed dataset is already available for this model config and partition
     dataset_name = "task_" + model_config["task"] + "_" + \
                    "sr_" + str(model_config["expected_sr"]) + "_" + \
@@ -135,9 +135,19 @@ def get_dataset(model_config, input_shape, output_shape, partition):
         # We have to prepare the MUSDB dataset
         print("Preparing MUSDB dataset! This could take a while...")
         dsd_train, dsd_test = getMUSDB(model_config["musdb_path"])  # List of (mix, acc, bass, drums, other, vocal) tuples
-
-        # Pick 25 random songs for validation from MUSDB train set (this is always the same selection each time since we fix the random seed!)
-        val_idx = np.random.choice(len(dsd_train), size=25, replace=False)
+        
+        # Select only a sample of the dataset in case model_config['musdb_sampling'] is on
+        from random import sample
+        if model_config['musdb_sampling']:
+            train_sample_size = int(len(dsd_train)*model_config["musdb_sr"])
+            test_sample_size = int(len(dsd_test)*model_config["musdb_sr"])
+            dsd_train = sample(dsd_train,train_sample_size) # Re-write training set
+            dsd_test = sample(dsd_test,test_sample_size) # Re-write test set
+        
+        # Pick random songs for validation from MUSDB train set (this is always the same selection each time since we fix the random seed!)
+        # UPDATE_JPL: parametrization of the validation index: 1/4 of the training set size, keeping original ratio
+        val_size = int(len(dsd_train)/4)
+        val_idx = np.random.choice(len(dsd_train), size=val_size, replace=False) # originally was "size=25" 
         train_idx = [i for i in range(len(dsd_train)) if i not in val_idx]
         print("Validation with MUSDB training songs no. " + str(train_idx))
 
@@ -218,6 +228,7 @@ def get_dataset(model_config, input_shape, output_shape, partition):
 def get_path(db_path, instrument_node):
     return db_path + os.path.sep + instrument_node.xpath("./relativeFilepath")[0].text
 
+
 def getMUSDB(database_path):
     mus = musdb.DB(root_dir=database_path, is_wav=False)
 
@@ -272,8 +283,7 @@ def getMUSDB(database_path):
 
             samples.append(paths)
 
-        subsets.append(samples)
-
+        subsets.append(samples)        
     return subsets
 
 def getCCMixter(xml_path):
