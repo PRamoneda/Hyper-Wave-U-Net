@@ -63,11 +63,16 @@ def train(model_config, experiment_id, load_model=None):
     
     # Add MHE thompson loss as regularization, if in use
     if model_config["mhe"]:
-        thom_loss_list = tf.get_collection('thomson_loss')
+        thom_loss_list = tf.get_collection('thomson_loss') # Hidden layers
         if len(thom_loss_list) != 0:
             thom_loss = tf.add_n(thom_loss_list)
             separator_loss += thom_loss
-            
+         
+        thom_final_list = tf.get_collection('thomson_final') # Output layer
+        if len(thom_final_list) != 0:
+            thom_final = tf.add_n(thom_final_list)
+            separator_loss += thom_final
+                  
     # Normalise by number of sources
     separator_loss = separator_loss / float(model_config["num_sources"]) 
 

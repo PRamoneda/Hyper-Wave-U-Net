@@ -43,7 +43,7 @@ def test(model_config, partition, model_folder, load_model):
     # CHECKPOINTING
     # Load pretrained model to test
     restorer = tf.train.Saver(tf.global_variables(), write_version=tf.train.SaverDef.V2)
-    print("Num of variables" + str(len(tf.global_variables())))
+    print("Num of variables: " + str(len(tf.global_variables())))
     restorer.restore(sess, load_model)
     print('Pre-trained model restored for testing')
 

@@ -14,7 +14,7 @@ def cfg():
                     "log_dir" : "logs", # Base folder for logs files
                     "batch_size" : 16, # Batch size
                     "init_sup_sep_lr" : 1e-4, # Supervised separator learning rate
-                    "epoch_it" : 5, # Number of supervised separator steps per epoch (originally 2000)
+                    "epoch_it" : 10, # Number of supervised separator steps per epoch (originally 2000)
                     'cache_size': 4000, # Number of audio snippets buffered in the random shuffle queue. Larger is better, since workers put multiple examples of one song into this queue. The number of different songs that is sampled from with each batch equals cache_size / num_snippets_per_track. Set as high as your RAM allows.
                     'num_workers' : 4, # Number of processes used for each TF map operation used when loading the dataset
                     "num_snippets_per_track" : 100, # Number of snippets that should be extracted from each song at a time after loading it. Higher values make data loading faster, but can reduce the batches song diversity (originally 100)
@@ -35,7 +35,7 @@ def cfg():
                     'task' : 'voice', # Type of separation task. 'voice' : Separate music into voice and accompaniment. 'multi_instrument': Separate music into guitar, bass, vocals, drums and other (Sisec)
                     'augmentation' : True, # Random attenuation of source signals to improve generalisation performance (data augmentation)
                     'raw_audio_loss' : True, # Only active for unet_spectrogram network. True: L2 loss on audio. False: L1 loss on spectrogram magnitudes for training and validation and test loss
-                    'worse_epochs' : 20, # Patience for early stoppping on validation set
+                    'worse_epochs' : 2, # Patience for early stoppping on validation set (originally 20)
                     
                     'musdb_sampling': True, # In case only a sample of the MUSDB18 dataset is being used
                     'musdb_sr': 0.1, # Percentage of the MUSDB18 dataset to keep

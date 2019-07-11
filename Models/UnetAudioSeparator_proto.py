@@ -6,6 +6,7 @@ from Utils import LeakyReLU
 import numpy as np
 import Models.OutputLayer
 
+import Models.Mhe
 from Models.Mhe import add_thomson_constraint
 
 class UnetAudioSeparator:
@@ -96,8 +97,8 @@ class UnetAudioSeparator:
         '''
         Creates symbolic computation graph of the U-Net for a given input batch
         
-        JPL: the *tf.layer.conv1d* implementation was changed to *tf.nn.conv1d* in order to declare weights explicitly
-        and use them for MHE regularization
+        NOTE: the *tf.layer.conv1d* implementation was changed to *tf.nn.conv1d* in order to declare weights explicitly
+        and use them for MHE regularization. Hence, the activation function has to be declared outside the convolution
         
         :param input: Input batch of mixtures, 3D tensor [batch_size, num_samples, num_channels]
         :param reuse: Whether to create new parameter variables or reuse existing ones
@@ -112,28 +113,28 @@ class UnetAudioSeparator:
                 # Variable scope corresponding to each layer
                 with tf.variable_scope("down_conv_"+str(i), reuse=reuse):
                     
-                    # 1. Define size and weights for downsampling blocks
+                    # 1. Define weights tensor for downsampling blocks
                     n_filt = self.num_initial_filters + (self.num_initial_filters * i) # number of filters in the current layer
                     shape = [self.filter_size, self.num_channels, n_filt] # should be [kernel_size, num_channels, num_filters]
                     W = tf.get_variable('W', shape=shape, initializer=tf.random_normal_initializer()) # get weights for a given layer
                     
-                    # 2. Add MHE (thompson constraint) to the collection in case it's activated
+                    # 2. Add MHE (thompson constraint) to the collection if in use
                     if self.mhe:
                         add_thomson_constraint(W, n_filt, self.mhe_model, self.mhe_power)
                     
-                    # 3. Create layer using tf.nn.conv1d instead of tf.layer.conv1d: this involves applying the activation outside the function
+                    # 3. Create layer using tf.nn.conv1d instead of tf.layer.conv1d: this involves applying activation outside the function
                     current_layer = tf.nn.conv1d(current_layer, W, stride=1, padding=self.padding) # out = in - filter + 1
                     current_layer = tf.nn.leaky_relu(current_layer) # Built-in Leaky ReLu with alpha=0.2 (default) as in Utils.LeakyReLu
                     enc_outputs.append(current_layer) # Append the resulting feature vector to the output
                     current_layer = current_layer[:,::2,:] # Decimate by factor of 2 # out = (in-1)/2 + 1
 
-            # 4. Last layer of the Encoding path to obtain features
+            # Last layer of the downsampling path to obtain features
             with tf.variable_scope("down_conv_"+str(self.num_layers), reuse=reuse):
                 n_filt = self.num_initial_filters + (self.num_initial_filters * self.num_layers) # number of filters in last layer 
                 shape = [self.filter_size, self.num_channels, n_filt]
                 W = tf.get_variable('W', shape=shape, initializer=tf.random_normal_initializer()) # get weights
                 
-                # Add MHE (thompson constraint) to the collection when in use
+                # Add MHE (thompson constraint) to the collection if in use
                 if self.mhe:
                         add_thomson_constraint(W, n_filt, self.mhe_model, self.mhe_power)
                 
@@ -191,6 +192,7 @@ class UnetAudioSeparator:
                 return Models.OutputLayer.independent_outputs(current_layer, self.source_names, self.num_channels, self.output_filter_size, self.padding, out_activation)
             elif self.output_type == "difference":
                 cropped_input = Utils.crop(input,current_layer.get_shape().as_list(), match_feature_dim=False)
-                return Models.OutputLayer.difference_output(cropped_input, current_layer, self.source_names, self.num_channels, self.output_filter_size, self.padding, out_activation, training)
+                return Models.OutputLayer.difference_output(cropped_input, current_layer, self.source_names, self.num_channels, self.output_filter_size, self.padding, out_activation, training, self.mhe, self.mhe_power) # This line if MHE for Output layer is in use
+                #return Models.OutputLayer.difference_output(cropped_input, current_layer, self.source_names, self.num_channels, self.output_filter_size, self.padding, out_activation, training) # Use this line if MHE for Output layer is not implemented
             else:
                 raise NotImplementedError
