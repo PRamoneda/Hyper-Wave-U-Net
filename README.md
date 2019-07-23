@@ -1,5 +1,5 @@
 # Exploring the use of Minimim Hyperspherical Energy (MHE) regularization for the Wave-U-Net
-_(work in progress)_
+_(work in progress)_ <be>
 Based on: 
 - The [Wave-U-Net](https://arxiv.org/abs/1806.03185) for audio source separation (Stoller et al., 2018).
 - Implementation of [MHE](https://github.com/wy1iu/MHE) for deep learning models (Liu et al., 2018)
