@@ -1,5 +1,4 @@
 import tensorflow as tf
-import numpy as np
 import math
 
 """
@@ -23,8 +22,8 @@ def add_thomson_constraint(W, n_filt, model, power):
         W_neg = W*-1
         W = tf.concat((W,W_neg), axis=1)
         n_filt *= 2
-    W _norm = tf.sqrt(tf.reduce_sum(W*W, [0], keep_dims=True) + 1e-4)
-    norm_mat = tf.matmul(tf.transpose(W _norm), W_norm)
+    W_norm = tf.sqrt(tf.reduce_sum(W*W, [0], keepdims=True) + 1e-4) # it was originally keep_dims
+    norm_mat = tf.matmul(tf.transpose(W_norm), W_norm)
     inner_pro = tf.matmul(tf.transpose(W), W)
     inner_pro /= norm_mat
 
@@ -80,7 +79,7 @@ def add_thomson_constraint_final(W, n_filt, power):
     :return: adds the calculated thompson loss for the current layer to a tf collection
     """
     W = tf.reshape(W, [-1, n_filt])
-    W_norm = tf.sqrt(tf.reduce_sum(W*W, [0], keep_dims=True) + 1e-4)
+    W_norm = tf.sqrt(tf.reduce_sum(W*W, [0], keepdims=True) + 1e-4) # it was originally keep_dims
     norm_mat = tf.matmul(tf.transpose(W_norm), W_norm)
     inner_pro = tf.matmul(tf.transpose(W), W)
     inner_pro /= norm_mat
