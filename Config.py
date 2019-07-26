@@ -37,7 +37,7 @@ def cfg():
                     'raw_audio_loss' : True, # Only active for unet_spectrogram network. True: L2 loss on audio. False: L1 loss on spectrogram magnitudes for training and validation and test loss
                     'worse_epochs' : 2, # Patience for early stoppping on validation set (originally 20)
                     
-                    'musdb_sampling': True, # In case only a sample of the MUSDB18 dataset is being used
+                    'musdb_sampling': False, # In case only a sample of the MUSDB18 dataset is being used
                     'use_ccmixter': False, # Incates if CCMixter will be used for training
                     'musdb_sr': 0.1, # Percentage of the MUSDB18 dataset to keep
                     'mhe': False, # Indicates if MHE regularization will be added or not to the loss function
@@ -167,22 +167,14 @@ def unet_spectrogram_l1():
         "raw_audio_loss" : False
     }
 
+
+# ---------------------
+# BASELINE & MHE MODELS
+# ---------------------
+
 @config_ingredient.named_config
-def sample_voice_no_mhe():
+def baseline_no_mhe():
     print("Training singing voice separation (mono) with NO MHE")
-    model_config = {
-        "output_type": "difference",
-        "context": True,
-        "upsampling": "linear",
-        "mono_downmix": True,
-        "task" : "voice",
-        "musdb_sampling": True,
-        "mhe": False
-    }
-    
-@config_ingredient.named_config
-def baseline_voice_no_mhe():
-    print("Training singing voice separation (mono) with NO MHE - Full MUSDB18 dataset")
     model_config = {
         "output_type": "difference",
         "context": True,
@@ -192,9 +184,10 @@ def baseline_voice_no_mhe():
         "musdb_sampling": False,
         "mhe": False
     }
+    
 
 @config_ingredient.named_config
-def sample_voice_mhe_0():
+def mhe_0():
     print("Training singing voice separation (mono) with MHE=0")
     model_config = {
         "output_type": "difference",
@@ -202,14 +195,14 @@ def sample_voice_mhe_0():
         "upsampling": "linear",
         "mono_downmix": True,
         "task" : "voice",
-        "musdb_sampling": True,
+        "musdb_sampling": False,
         "mhe": True,
         "mhe_model": "mhe",
         "mhe_power": "0"
     }
 
 @config_ingredient.named_config
-def sample_voice_half_mhe_0():
+def half_mhe_0():
     print("Training singing voice separation (mono) with half_MHE=0")
     model_config = {
         "output_type": "difference",
@@ -217,38 +210,9 @@ def sample_voice_half_mhe_0():
         "upsampling": "linear",
         "mono_downmix": True,
         "task" : "voice",
-        "musdb_sampling": True,
+        "musdb_sampling": False,
         "mhe": True,
         "mhe_model": "half_mhe",
         "mhe_power": "0"
     }
 
-@config_ingredient.named_config
-def sample_voice_mhe_1():
-    print("Training singing voice separation (mono) with MHE=1")
-    model_config = {
-        "output_type": "difference",
-        "context": True,
-        "upsampling": "linear",
-        "mono_downmix": True,
-        "task" : "voice",
-        "musdb_sampling": True,
-        "mhe": True,
-        "mhe_model": "mhe",
-        "mhe_power": "1"
-    }
-    
-@config_ingredient.named_config
-def sample_voice_mhe_a2():
-    print("Training singing voice separation (mono) with MHE=a2")
-    model_config = {
-        "output_type": "difference",
-        "context": True,
-        "upsampling": "linear",
-        "mono_downmix": True,
-        "task" : "voice",
-        "musdb_sampling": True,
-        "mhe": True,
-        "mhe_model": "mhe",
-        "mhe_power": "a2"
-    }    

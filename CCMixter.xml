@@ -1,6 +1,6 @@
 <database>
   <databaseName>CCMixter</databaseName>
-  <databaseFolderPath>C:/Users/Joaquin/Documents/GitHub/Wave-U-Net/Datasets/CCMixter</databaseFolderPath>
+  <databaseFolderPath>mhe-wave-u-net/Datasets/CCMixter</databaseFolderPath>
   <trackList>
     <track>
       <title>To_Be_Sensitive_(with_mindmapthat)</title>
