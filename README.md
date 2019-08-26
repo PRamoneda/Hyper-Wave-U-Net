@@ -4,9 +4,7 @@ Based on:
 - The [Wave-U-Net](https://arxiv.org/abs/1806.03185) for audio source separation (Stoller et al., 2018).
 - Implementation of [MHE](https://github.com/wy1iu/MHE) for deep learning models (Liu et al., 2018)
 
-## Listening examples
-
-Listen to vocal separation results [here](https://sisec18.unmix.app/#/unmix/Side%20Effects%20Project%20-%20Sing%20With%20Me/STL1) and to multi-instrument separation results [here](https://sisec18.unmix.app/#/unmix/Side%20Effects%20Project%20-%20Sing%20With%20Me/STL2)
+%## Listening examples
 
 ## What is the Wave-U-Net?
 The Wave-U-Net is a convolutional neural network applicable to audio source separation tasks, which works directly on the raw audio waveform, presented in [this paper](https://arxiv.org/abs/1806.03185).
@@ -16,10 +14,6 @@ The Wave-U-Net is an adaptation of the U-Net architecture to the one-dimensional
 See the diagram below for a summary of the network architecture.
 
 <img src="./waveunet.png" width="500">
-
-### Participation in the SiSec separation competition
-
-The Wave-U-Net also participated in the [SiSec separation campaign](https://sisec.inria.fr/) as submissions [STL1](https://github.com/sigsep/sigsep-mus-2018/blob/master/submissions/STL1/description.md) and [STL2](https://github.com/sigsep/sigsep-mus-2018/blob/master/submissions/STL2/description.md) and achieved a good performance, especially considering the limited dataset we used compared to many other submissions despite having a more data-hungry end-to-end approach (we have to learn the frequency decomposition front-end from data as well).
 
 # Installation
 
