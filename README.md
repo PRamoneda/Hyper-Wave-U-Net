@@ -1,10 +1,9 @@
-# Exploring the use of Minimim Hyperspherical Energy (MHE) regularization for the Wave-U-Net
+# Exploring Minimim Hyperspherical Energy (MHE) for improving Singing Voice Separation with the Wave-U-Net
 _(work in progress)_ <be>
 Based on: 
 - The [Wave-U-Net](https://arxiv.org/abs/1806.03185) for audio source separation (Stoller et al., 2018).
 - Implementation of [MHE](https://github.com/wy1iu/MHE) for deep learning models (Liu et al., 2018)
 
-%## Listening examples
 
 ## What is the Wave-U-Net?
 The Wave-U-Net is a convolutional neural network applicable to audio source separation tasks, which works directly on the raw audio waveform, presented in [this paper](https://arxiv.org/abs/1806.03185).
