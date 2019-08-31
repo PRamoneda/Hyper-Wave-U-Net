@@ -1,4 +1,4 @@
-# Hyper-Wave-U-Net:
+## Hyper-Wave-U-Net:
 # Exploring Minimim Hyperspherical Energy (MHE) for improving Singing Voice Separation with the Wave-U-Net
 _(work in progress)_ <be>
 Based on: 
