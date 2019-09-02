@@ -1,9 +1,0 @@
-conda install -c conda-forge ffmpeg
-libsndfile
-
-___________________________________
-For GCP:
-sudo pip install ffmpeg
-sudo pip install libsndfile
-
-remember to change to tensorflow-gpu when using City servers!!
