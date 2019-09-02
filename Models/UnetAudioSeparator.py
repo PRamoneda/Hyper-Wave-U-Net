@@ -159,6 +159,7 @@ class UnetAudioSeparator:
                     else:
                         current_layer = tf.image.resize_bilinear(current_layer, [1, current_layer.get_shape().as_list()[2]*2]) # out = in + in - 1
                 current_layer = tf.squeeze(current_layer, axis=1)
+                
                 # UPSAMPLING FINISHED
 
                 assert(enc_outputs[-i-1].get_shape().as_list()[1] == current_layer.get_shape().as_list()[1] or self.context) #No cropping should be necessary unless we are using context

@@ -10,14 +10,17 @@ import numpy as np
 import os
 import json
 import glob
-import csv
 import pandas as pd
+import seaborn as sns
+import matplotlib.pyplot as plt
 
-model_name = "mhe_0.csv" # change model name here
+model_name = "final_mhe_0_sample_valstep_reg2L" # change model name here
+filename = str(model_name + '.csv')
 out_path = r"C:\Users\Joaquin\Documents\GitHub\Wave-U-Net\Results\SDR" # where to save SDR metrics
 
-json_folder = r"C:\Users\Joaquin\Documents\GitHub\Wave-U-Net\Source_Estimates\test" # add "r" before the path
+json_folder = r"C:\Users\Joaquin\Documents\GitHub\Wave-U-Net\Source_Estimates\final_mhe_0_sample_valstep_reg2L\test" # add "r" before the path
 compute_averages = True
+plot_hist = False
 metric = "SDR"
 
 files = glob.glob(os.path.join(json_folder, "*.json"))
@@ -46,14 +49,27 @@ if compute_averages:
     # convert to pandas DF
     df_out = pd.DataFrame(out, columns=['Med','MAD','Mean','SD'], index=['voice','acc'])
     # save results to folder
-    df_out.to_csv(os.path.join(out_path, model_name))
+    df_out.to_csv(os.path.join(out_path, filename))
 else:
     # convert to pandas DF
     df_out_full = pd.DataFrame(inst_list, index=['voice','acc'])
     # transpose DF
     df_out_full = df_out_full.transpose(copy=True)
     # save results to folder
-    model_name_full = str('full_data_' + model_name)
-    df_out_full.to_csv(os.path.join(out_path, model_name_full))
-
+    filename_full = str('full_data_' + filename)
+    df_out_full.to_csv(os.path.join(out_path, filename_full))
+    # drop NA
+    df_out_full = df_out_full.dropna()
+    
+    if plot_hist:
+        # plot histograms    
+        sns.distplot(df_out_full['voice'], color='#9b59b6', label='voice', hist=False, kde=True)
+        sns.distplot(df_out_full['acc'], color='#3498db', label='accompaniment', hist=False, kde=True)
+        plt.legend(prop={'size': 12})
+        plt.suptitle('SDR distributions for estimated voice and accompaniment')
+        plt.title('Baseline') # CHANGE TITLE HERE
+        plt.rc('text', usetex=True) # import latex extension
+        plt.rc('font', family='serif') # use latex font
+        plt.xlabel('dB')
+        plt.ylabel('Frequency')
 

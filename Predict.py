@@ -18,9 +18,9 @@ ex = Experiment('Waveunet Prediction', ingredients=[config_ingredient])
 
 @ex.config
 def cfg():
-    load_model = os.path.join("checkpoints", "359420", "359420-76000") # Best model
+    load_model = os.path.join("checkpoints", "614249", "614249-57000") # Best model
     musdb_path = "C:/Users/Joaquin/Documents/GitHub/Wave-U-Net/Datasets/MUSDB18/"
-    output_path = "C:/Users/Joaquin/Documents/GitHub/Wave-U-Net/Source_Estimates"# Where to save results. Default: Same location as input.
+    output_path = "C:/Users/Joaquin/Documents/GitHub/Wave-U-Net/Source_Estimates/final_mhe_0_sample_valstep_reg2L"# Where to save results. Default: Same location as input.
     
 @ex.automain
 def main(cfg, load_model, musdb_path, output_path):

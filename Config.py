@@ -38,7 +38,7 @@ def cfg():
                     'worse_epochs' : 2, # Patience for early stoppping on validation set (originally 20)
                     
                     'musdb_sampling': False, # In case only a sample of the MUSDB18 dataset is being used
-                    'use_ccmixter': False, # Incates if CCMixter will be used for training
+                    'use_ccmixter': True, # Incates if CCMixter will be used for training
                     'musdb_sr': 0.1, # Percentage of the MUSDB18 dataset to keep
                     'mhe': False, # Indicates if MHE regularization will be added or not to the loss function
                     'mhe_model': 'mhe', # Select between standard MHE ("mhe") and half-space MHE ("half_mhe")
@@ -173,8 +173,8 @@ def unet_spectrogram_l1():
 # ---------------------
 
 @config_ingredient.named_config
-def baseline_no_mhe():
-    print("Training singing voice separation (mono) with NO MHE")
+def final_baseline_no_mhe_sample_lr():
+    print("Training singing voice separation (stereo) with NO MHE")
     model_config = {
         "output_type": "difference",
         "context": True,
@@ -187,7 +187,7 @@ def baseline_no_mhe():
     
 
 @config_ingredient.named_config
-def mhe_0():
+def final_mhe_0_sample_valstep_reg2L():
     print("Training singing voice separation (mono) with MHE=0")
     model_config = {
         "output_type": "difference",
@@ -202,8 +202,8 @@ def mhe_0():
     }
 
 @config_ingredient.named_config
-def half_mhe_0():
-    print("Training singing voice separation (mono) with half_MHE=0")
+def half_mhe_a2():
+    print("Training singing voice separation (mono) with half_MHE=a2")
     model_config = {
         "output_type": "difference",
         "context": True,
@@ -213,6 +213,6 @@ def half_mhe_0():
         "musdb_sampling": False,
         "mhe": True,
         "mhe_model": "half_mhe",
-        "mhe_power": "0"
+        "mhe_power": "a2"
     }
 

@@ -71,7 +71,7 @@ def train(model_config, experiment_id, load_model=None):
             thom_loss /= (model_config["num_layers"]*2) # Apply weighting to MHE
             separator_loss += thom_loss
          
-        # ADD THESE 4 LINES IF MHE FOR OUTPUT LAYER IS IN USE     
+        # ADD THE NEXT 4 LINES IF MHE FOR OUTPUT LAYER IS IN USE     
         #thom_final_list = tf.get_collection('thomson_final') # Output layer
         #if len(thom_final_list) != 0:
             #thom_final = tf.add_n(thom_final_list)

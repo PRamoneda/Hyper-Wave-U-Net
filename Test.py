@@ -78,7 +78,7 @@ def test(model_config, partition, model_folder, load_model):
             thom_loss /= (model_config["num_layers"]*2) # Reduce energy dividing by number of layers
             separator_loss += thom_loss
             
-       # ADD THESE 4 LINES IF MHE FOR OUTPUT LAYER IS IN USE     
+       # ADD THE NEXT 4 LINES IF MHE FOR OUTPUT LAYER IS IN USE     
         #thom_final_list = tf.get_collection('thomson_final') # Output layer
         #if len(thom_final_list) != 0:
             #thom_final = tf.add_n(thom_final_list)
@@ -100,8 +100,8 @@ def test(model_config, partition, model_folder, load_model):
     writer.add_summary(summary, global_step=_global_step) 
     
     if model_config["mhe"]:
-        th_summary = tf.Summary(value=[tf.Summary.Value(tag="thom_loss", simple_value=thom_loss)]) # HERE
-        writer.add_summary(th_summary, global_step=_global_step) # HERE
+        th_summary = tf.Summary(value=[tf.Summary.Value(tag="thom_loss", simple_value=thom_loss)]) 
+        writer.add_summary(th_summary, global_step=_global_step) 
 
     writer.flush()
     writer.close()
