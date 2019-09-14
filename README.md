@@ -11,6 +11,8 @@ The Wave-U-Net is a convolutional neural network applicable to audio source sepa
 ## What is MHE regularisation?
 Recently introduced in [this paper](https://arxiv.org/abs/1805.09298), Minimum Hyperspherical Energy is a regularisation framework that reduces neuron redundancy through diversification. Inspired by a well-known physics problem, it searches for minimising the hyperspherical energy of the neuron configuration. A lower energy value implies that the neurons are more diverse and more uniformly spaced.
 
+![](diagram_v2.JPG)
+
 ## Installation
 
 ### Requirements 
