@@ -173,8 +173,8 @@ def unet_spectrogram_l1():
 # ---------------------
 
 @config_ingredient.named_config
-def final_baseline_no_mhe_sample_lr():
-    print("Training singing voice separation (stereo) with NO MHE")
+def baseline_no_mhe():
+    print("Training singing voice separation (mono) with NO MHE")
     model_config = {
         "output_type": "difference",
         "context": True,
@@ -187,7 +187,7 @@ def final_baseline_no_mhe_sample_lr():
     
 
 @config_ingredient.named_config
-def final_mhe_0_sample_valstep_reg2L():
+def mhe_0():
     print("Training singing voice separation (mono) with MHE=0")
     model_config = {
         "output_type": "difference",
