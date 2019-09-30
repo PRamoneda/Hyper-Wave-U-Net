@@ -1,5 +1,5 @@
 ## Hyper-Wave-U-Net:
-# Exploring Minimum Hyperspherical Energy for improving Singing Voice Separation with the Wave-U-Net
+# Exploring Minimum Hyperspherical Energy regularisation for improving Singing Voice Separation with the Wave-U-Net
 
 Based on: 
 - The [Wave-U-Net](https://github.com/f90/Wave-U-Net) for audio source separation (Stoller et al., 2018).
