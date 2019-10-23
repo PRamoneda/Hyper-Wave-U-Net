@@ -1,6 +1,6 @@
 ## Hyper-Wave-U-Net:
 # Improving Singing Voice Separation with the Wave-U-Net using Minimum Hyperspherical Energy
-
+_By J. Perez-Lapillo, O. Galkin and T. Weyde
 _Paper available [here](https://arxiv.org/abs/1910.10071)_
 
 Based on: 
